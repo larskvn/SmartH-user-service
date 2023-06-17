@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "result-service", url = "http://localhost:8002", path = "/resultado")
+@FeignClient(name = "result-service", url = "https://smarth-resultdado-service.up.railway.app", path = "/resultado")
 public interface ResultFeingClient {
 
     @PostMapping()
