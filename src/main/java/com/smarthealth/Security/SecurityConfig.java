@@ -38,8 +38,8 @@ public class SecurityConfig {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-        corsConfig.setAllowedOrigins(Collections.singletonList("https://smartheal.vercel.app")); // Permitir solo el origen específico
+        //corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        corsConfig.setAllowedOrigins(Collections.singletonList("https://smartheal.vercel.app/*")); // Permitir solo el origen específico
         corsConfig.addAllowedMethod("*"); // Permitir todos los métodos (GET, POST, PUT, DELETE, etc.)
         corsConfig.addAllowedHeader("*"); // Permitir todos los encabezados
         corsConfig.setAllowCredentials(true); // Permitir el uso de credenciales (cookies, encabezados de autorización, etc.)
