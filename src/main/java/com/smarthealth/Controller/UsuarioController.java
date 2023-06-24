@@ -48,7 +48,7 @@ public class UsuarioController {
     @PostMapping("/")
     public UsuarioEntity save(@RequestBody UsuarioEntity usuario)  throws Exception {
         usuario.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
-        usuario.setRol(Rol.MEDIC);
+        usuario.setRol(Rol.PATIENT);
 
         return usuarioService.save(usuario);
 
