@@ -20,8 +20,8 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    /*@Autowired
+    PasswordEncoder passwordEncoder;*/
 
 
     @GetMapping
@@ -44,7 +44,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioEntity);
     }
 
-
+/*
     @PostMapping("/")
     public UsuarioEntity save(@RequestBody UsuarioEntity usuario)  throws Exception {
         usuario.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
@@ -52,7 +52,7 @@ public class UsuarioController {
 
         return usuarioService.save(usuario);
 
-    }
+    }*/
 
     @DeleteMapping("/{userid}")
     public UsuarioEntity delete(@PathVariable Integer userid){
