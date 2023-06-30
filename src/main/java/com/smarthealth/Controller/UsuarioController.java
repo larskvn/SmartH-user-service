@@ -114,12 +114,26 @@ public class UsuarioController {
 
     //get con restTemplate
 
-    @GetMapping("/resultado/{idUser}")
+   /* @GetMapping("/resultado/{idUser}")
     public  ResponseEntity<List<ResultService>> getResultados(@PathVariable("idUser") int userid){
         UsuarioEntity usuarioEntity = usuarioService.getUsuarioById(userid);
         if (usuarioEntity == null)
             return ResponseEntity.notFound().build();
         List<ResultService> resultServices =usuarioService.getResultado(userid);
+        return ResponseEntity.ok(resultServices);
+    }*/
+
+    @GetMapping("/getAllResult")
+    public ResponseEntity<List<ResultService>> getResultados(Authentication authentication) {
+        String username = authentication.getName();
+        UsuarioEntity usuarioEntity = usuarioService.obtenerUser(username);
+        if (usuarioEntity == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        int userid = usuarioEntity.getUserid();
+        List<ResultService> resultServices = usuarioService.getResultado(userid);
+
         return ResponseEntity.ok(resultServices);
     }
 
