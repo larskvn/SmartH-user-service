@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smarthealth.Entity.UsuarioEntity;
+import com.smarthealth.Repository.UsuarioRepository;
 import com.smarthealth.Security.Jwt.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,10 +18,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Autowired
@@ -62,6 +65,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
         String token = jwtUtils.generateAccesToken(user.getUsername());
+
+
+
+
 
         response.addHeader("Authorization",token);
         Map<String, Object> httpResponse = new HashMap<>();

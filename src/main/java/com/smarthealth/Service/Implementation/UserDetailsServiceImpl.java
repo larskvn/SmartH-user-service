@@ -20,11 +20,33 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-
     @Override
-    public UserDetails loadUserByUsername(String username)  {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UsuarioEntity usuarioEntity= usuarioRepository.findByUsername(username);
+        if (null== usuarioEntity){
+            throw new UsernameNotFoundException("El usuario " + username +" no existe");
+        }
+        Collection<? extends GrantedAuthority> authorities = Stream.of(usuarioEntity.getRol())
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                .collect(Collectors.toSet());
+
+
+
+
+        return new User(usuarioEntity.getUsername(),
+                usuarioEntity.getPassword(),
+                true,
+                true,
+                true,
+                true,
+                authorities);
+    }
+
+
+   /* @Override
+    public UserDetails loadUserByUsername(String username) {
         UsuarioEntity usuarioEntity = usuarioRepository.findByUsername(username);
-        //.orElseThrow(()-> new UsernameNotFoundException("El usuario no exite" + username + "no esxite"));
+                .orElseThrow(()-> new UsernameNotFoundException("El usuario no exite" + username + "no esxite"));
         Collection<? extends GrantedAuthority> authorities = Stream.of(usuarioEntity.getRol())
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                 .collect(Collectors.toSet());
@@ -38,5 +60,5 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
                 true,
                 authorities);
 
-    }
+    }*/
 }

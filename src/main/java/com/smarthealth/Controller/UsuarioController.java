@@ -7,9 +7,11 @@ import com.smarthealth.Models.ValidationService;
 import com.smarthealth.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,8 @@ import java.util.Map;
 public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    UserDetailsService userDetailsService;
 
     /*@Autowired
     PasswordEncoder passwordEncoder;*/
@@ -28,6 +32,24 @@ public class UsuarioController {
     public List<UsuarioEntity> findAll(){
         return usuarioService.findAll();
     }
+
+    @GetMapping("/user-actual")
+    public UsuarioEntity UserActual(Principal principal){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+
+        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        usuarioEntity.setUsername(userDetails.getUsername());
+        //usuarioEntity.setLastname(userDetails.getLastname()); // Copia el apellido desde el UserDetails
+        usuarioEntity.setPassword(userDetails.getPassword()); // Copia la contraseña desde el UserDetails
+        //usuarioEntity.setBirthdate(userDetails.getBirthdate()); // Copia la fecha de nacimiento desde el UserDetails
+        //usuarioEntity.setPhone(userDetails.getPhone());
+        usuarioEntity.setRol(Rol.valueOf(userDetails.getAuthorities().iterator().next().getAuthority().substring(5)));
+
+
+        return usuarioEntity;
+    }
+
+
 
     @GetMapping("/{username}")
     public UsuarioEntity obtenerUser(@PathVariable("username") String username){
