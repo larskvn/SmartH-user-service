@@ -1,12 +1,15 @@
 package com.smarthealth.Controller;
 
 import com.smarthealth.Emun.Rol;
+import com.smarthealth.Entity.UsuarioDTO;
 import com.smarthealth.Entity.UsuarioEntity;
 import com.smarthealth.Models.ResultService;
 import com.smarthealth.Models.ValidationService;
+import com.smarthealth.Repository.UsuarioRepository;
 import com.smarthealth.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,9 @@ public class UsuarioController {
     @Autowired
     UserDetailsService userDetailsService;
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
     /*@Autowired
     PasswordEncoder passwordEncoder;*/
 
@@ -33,7 +39,7 @@ public class UsuarioController {
         return usuarioService.findAll();
     }
 
-    @GetMapping("/user-actual")
+  /*  @GetMapping("/user-actual")
     public UsuarioEntity UserActual(Principal principal){
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
 
@@ -47,7 +53,26 @@ public class UsuarioController {
 
 
         return usuarioEntity;
+    }*/
+
+    @GetMapping("/userLogin/actual")
+    public ResponseEntity<UsuarioDTO> getUserDetails(Authentication authentication) {
+        String username = authentication.getName();
+        UsuarioEntity usuarioEntity = usuarioRepository.findByUsername(username);
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setUserid(usuarioEntity.getUserid());
+        usuarioDTO.setUsername(usuarioEntity.getUsername());
+        usuarioDTO.setLastname(usuarioEntity.getLastname());
+        usuarioDTO.setBirthdate(usuarioEntity.getBirthdate());
+        usuarioDTO.setPhone(usuarioEntity.getPhone());
+        usuarioDTO.setRol(usuarioEntity.getRol());
+        usuarioDTO.setEnable(usuarioEntity.isEnable());
+
+        return ResponseEntity.ok(usuarioDTO);
     }
+
+
 
 
 
