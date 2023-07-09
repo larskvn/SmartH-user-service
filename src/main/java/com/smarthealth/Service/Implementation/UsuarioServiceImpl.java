@@ -74,7 +74,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     //conexion entre microservicios
     @Override
     public List<ResultService> getResultado(int idUser) {
-        List<ResultService> resultados = restTemplate.getForObject("https://smarth-resultdado-service.up.railway.app/resultado/byuser/" + idUser, List.class);
+        List<ResultService> resultados = restTemplate.getForObject("https://smarth-resultado-service.azurewebsites.net/resultado/byuser/" + idUser, List.class);
         return resultados;
     }
 
