@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .authorizeHttpRequests(auth->{
-                    auth.requestMatchers("/login","/register").permitAll();
+                    auth.requestMatchers("/login","/register/**").permitAll();
                     auth.anyRequest().authenticated();//permitAll
                 })
                 .sessionManagement(session-> {

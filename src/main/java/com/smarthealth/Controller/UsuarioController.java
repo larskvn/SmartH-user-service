@@ -8,10 +8,12 @@ import com.smarthealth.Models.ValidationService;
 import com.smarthealth.Repository.UsuarioRepository;
 import com.smarthealth.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -26,6 +28,8 @@ public class UsuarioController {
     UsuarioService usuarioService;
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     UsuarioRepository usuarioRepository;
@@ -39,21 +43,7 @@ public class UsuarioController {
         return usuarioService.findAll();
     }
 
-  /*  @GetMapping("/user-actual")
-    public UsuarioEntity UserActual(Principal principal){
-        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
 
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setUsername(userDetails.getUsername());
-        //usuarioEntity.setLastname(userDetails.getLastname()); // Copia el apellido desde el UserDetails
-        usuarioEntity.setPassword(userDetails.getPassword()); // Copia la contraseña desde el UserDetails
-        //usuarioEntity.setBirthdate(userDetails.getBirthdate()); // Copia la fecha de nacimiento desde el UserDetails
-        //usuarioEntity.setPhone(userDetails.getPhone());
-        usuarioEntity.setRol(Rol.valueOf(userDetails.getAuthorities().iterator().next().getAuthority().substring(5)));
-
-
-        return usuarioEntity;
-    }*/
 
     @GetMapping("/userLogin/actual")
     public ResponseEntity<UsuarioDTO> getUserDetails(Authentication authentication) {
@@ -91,37 +81,6 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioEntity);
     }
 
-/*
-    @PostMapping("/")
-    public UsuarioEntity save(@RequestBody UsuarioEntity usuario)  throws Exception {
-        usuario.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
-        usuario.setRol(Rol.PATIENT);
-
-        return usuarioService.save(usuario);
-
-    }*/
-
-    @DeleteMapping("/{userid}")
-    public UsuarioEntity delete(@PathVariable Integer userid){
-        UsuarioEntity usuario = new UsuarioEntity();
-        usuario.setEnable(false);
-        return usuarioService.delete(UsuarioEntity.builder().userid(userid).build());
-    }
-
-
-
-    //conexion con resultados con Rest Template
-
-    //get con restTemplate
-
-   /* @GetMapping("/resultado/{idUser}")
-    public  ResponseEntity<List<ResultService>> getResultados(@PathVariable("idUser") int userid){
-        UsuarioEntity usuarioEntity = usuarioService.getUsuarioById(userid);
-        if (usuarioEntity == null)
-            return ResponseEntity.notFound().build();
-        List<ResultService> resultServices =usuarioService.getResultado(userid);
-        return ResponseEntity.ok(resultServices);
-    }*/
 
     @GetMapping("/getAllResult")
     public ResponseEntity<List<ResultService>> getResultados(Authentication authentication) {
@@ -136,6 +95,7 @@ public class UsuarioController {
 
         return ResponseEntity.ok(resultServices);
     }
+
 
 
 
@@ -161,6 +121,10 @@ public class UsuarioController {
 
 
 
+
+
+
+
     @GetMapping("/getAllValid/{medicId}")
     public ResponseEntity<Map<String, Object>> getMedicValidation(@PathVariable("medicId") int medicId){
         Map<String, Object> validation = usuarioService.getMedicValidation(medicId);
@@ -174,6 +138,7 @@ public class UsuarioController {
         ValidationService validationServiceNew = usuarioService.saveValid(medicId,v);
         return ResponseEntity.ok(v);
     }
+
 
 
 

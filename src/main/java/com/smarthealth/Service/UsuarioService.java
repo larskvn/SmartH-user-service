@@ -23,6 +23,8 @@ public interface UsuarioService {
 
     public UsuarioEntity delete(UsuarioEntity u);
 
+    public UsuarioEntity update(UsuarioEntity u);
+
 
     //implementado
     List<ResultService> getResultado(int idUser);

@@ -8,6 +8,7 @@ import com.smarthealth.Repository.UsuarioRepository;
 import com.smarthealth.Service.UsuarioService;
 import com.smarthealth.feingClients.ResultFeingClient;
 import com.smarthealth.feingClients.ValidationFeignClient;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -68,6 +69,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         UsuarioEntity usuarioEntity = usuarioRepository.getById(u.getUserid());
         usuarioEntity.setEnable(false);
         return usuarioRepository.save(usuarioEntity);
+    }
+
+    @Override
+    public UsuarioEntity update(UsuarioEntity u) {
+        UsuarioEntity objpaciente = usuarioRepository.getById(u.getUserid());
+        BeanUtils.copyProperties(u,objpaciente);
+        return usuarioRepository.save(objpaciente);
     }
 
 

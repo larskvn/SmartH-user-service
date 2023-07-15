@@ -12,19 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/register")
-public class RegisterUser {
-
+public class RegisterMedic {
 
     @Autowired
     UsuarioService usuarioService;
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
-    @PostMapping
+    @PostMapping("/medic")
     public UsuarioEntity save(@RequestBody UsuarioEntity usuario) throws Exception{
         usuario.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
-        usuario.setRol(Rol.PATIENT);
+        usuario.setRol(Rol.MEDIC);
         return usuarioService.save(usuario);
     }
 }
