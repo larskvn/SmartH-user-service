@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "result-service", url = "https://smarth-resultado-service.azurewebsites.net", path = "/resultado")
+@FeignClient(name = "result-service", url = "https://smart-resultados.azurewebsites.net", path = "/resultado")
 public interface ResultFeingClient {
 
     @PostMapping()
